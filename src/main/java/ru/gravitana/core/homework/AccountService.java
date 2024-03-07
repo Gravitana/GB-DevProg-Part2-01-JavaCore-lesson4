@@ -1,5 +1,9 @@
 package ru.gravitana.core.homework;
 
+import ru.gravitana.core.homework.exceptions.ErorrMessage;
+import ru.gravitana.core.homework.exceptions.IllegalArgumentException;
+import ru.gravitana.core.homework.view.AccountView;
+
 import java.util.Scanner;
 
 public class AccountService {
@@ -19,10 +23,23 @@ public class AccountService {
         return Integer.parseInt(scanner.nextLine());
     }
 
-    public void createAccount() {
+    public void createAccount() throws IllegalArgumentException {
         view.showWelcome();
         view.showInputPrompt("Введите начальный баланс счета: ");
-        account.setBalance(Integer.parseInt(scanner.nextLine()));
+
+        int amount;
+
+        try {
+            amount = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            throw new IllegalArgumentException(ErorrMessage.NOT_A_NUMBER);
+        }
+
+        if (amount < 0) {
+            throw new IllegalArgumentException(ErorrMessage.NEGATIVE_BALANCE);
+        }
+
+        account.setBalance(amount);
     }
 
     public void showBalance() {

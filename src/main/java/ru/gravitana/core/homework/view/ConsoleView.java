@@ -1,4 +1,4 @@
-package ru.gravitana.core.homework;
+package ru.gravitana.core.homework.view;
 
 public class ConsoleView implements AccountView {
     @Override
