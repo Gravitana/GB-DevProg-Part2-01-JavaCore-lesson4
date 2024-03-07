@@ -1,6 +1,7 @@
 package ru.gravitana.core.homework;
 
 import ru.gravitana.core.homework.exceptions.IllegalArgumentException;
+import ru.gravitana.core.homework.exceptions.InsufficientFundsException;
 import ru.gravitana.core.homework.view.AccountView;
 import ru.gravitana.core.homework.view.ConsoleView;
 
@@ -30,8 +31,20 @@ public class Program {
             userInput = accountService.getUserInput();
 
             switch (userInput) {
-                case 1 -> accountService.deposit();
-                case 2 -> accountService.getFunds();
+                case 1 -> {
+                    try {
+                        accountService.deposit();
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                case 2 -> {
+                    try {
+                        accountService.getFunds();
+                    } catch (IllegalArgumentException | InsufficientFundsException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
                 case 0 -> nextPart = true;
             }
         }

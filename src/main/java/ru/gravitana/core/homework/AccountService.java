@@ -2,6 +2,7 @@ package ru.gravitana.core.homework;
 
 import ru.gravitana.core.homework.exceptions.ErorrMessage;
 import ru.gravitana.core.homework.exceptions.IllegalArgumentException;
+import ru.gravitana.core.homework.exceptions.InsufficientFundsException;
 import ru.gravitana.core.homework.view.AccountView;
 
 import java.util.Scanner;
@@ -46,13 +47,39 @@ public class AccountService {
         view.showBalance(account.getBalance());
     }
 
-    public void deposit() {
+    public void deposit() throws IllegalArgumentException {
         view.showInputPrompt("Введите сумму депозита: ");
-        account.addFunds(Integer.parseInt(scanner.nextLine()));
+
+        int amount;
+
+        try {
+            amount = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            throw new IllegalArgumentException(ErorrMessage.NOT_A_NUMBER);
+        }
+
+        if (amount <= 0) {
+            throw new IllegalArgumentException(ErorrMessage.NEGATIVE_DEPOSIT);
+        }
+
+        account.addFunds(amount);
     }
 
-    public void getFunds() {
+    public void getFunds() throws IllegalArgumentException, InsufficientFundsException {
         view.showInputPrompt("Введите сумму снятия: ");
-        account.drewFunds(Integer.parseInt(scanner.nextLine()));
+
+        int amount;
+
+        try {
+            amount = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            throw new IllegalArgumentException(ErorrMessage.NOT_A_NUMBER);
+        }
+
+        if (amount > account.getBalance()) {
+            throw new InsufficientFundsException(ErorrMessage.INSUFFICIENT_FUNDS, account.getBalance(), amount);
+        }
+
+        account.drewFunds(amount);
     }
 }

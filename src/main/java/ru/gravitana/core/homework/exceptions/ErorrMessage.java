@@ -4,6 +4,7 @@ public enum ErorrMessage {
     NOT_A_NUMBER("Введённое значение не является числом"),
     NEGATIVE_BALANCE("Попытка создать счет с отрицательным начальным балансом"),
     NEGATIVE_DEPOSIT("Попытка внести депозит с нулевой или отрицательной суммой"),
+    INSUFFICIENT_FUNDS("Попытка снять средства, сумма которых превышает текущий баланс"),
     ;
 
     private final String title;
